@@ -1,3 +1,4 @@
+#This is only here to generate a text file with a list of clients to perform operations on for the HW.
 import random
 clientfirstnames = ['John', 'Clara', 'Sally', 'Sarah', 'Billy', 'Jack', 'Alex', 'Alan', 'Charles', 'Chuck', 'Oscar']
 clientlastnames = ['Graham', 'Mullins', 'Williamson', 'Weaver', 'Shelton', 'Rogers', 'Drew', 'Bird', 'McCoy', 'Meyer']
