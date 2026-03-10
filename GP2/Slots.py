@@ -1,45 +1,71 @@
 import random
 
-credits = 999999999999999999999999999999
+balance = 999999999999999999999999999999
 
-def slots():
-    global credits
-    symbols = ['🍒','🍋','🍇','BAR','7']
-    combo_current = []
-    player_roll = []
-    combo_select = 3
-    player_RNG = 3
-    print(f'Current Credits: {credits}')
+#Slots Game Functions
+
+def slots_spin():
+    symbols = ['🍒','🍋','🍇','BAR','7','🔔']
+    
+    return [random.choice(symbols) for _ in range(3)]
+
+def symbol_display(rows):
+    print(f'''------- ------- -------
+          |     | |     | |     |
+          |     | |     | |     |
+        {rows[0]} {rows[1]} {rows[2]}
+          |     | |     | |     |
+          |     | |     | |     |
+          ------- ------- -------''')
+
+def slots_valuer(rows,bet):
+    global balance
+    if rows[0] == rows[1] == rows[2]:
+        if rows[0] == '🍒':
+            bet *= 1
+            balance += bet
+        elif rows[0] == '🍋':
+            bet *= 1
+            balance += bet
+        elif rows[0] == '🍇':
+            bet *= 1
+            balance += bet
+        elif rows[0] == '🍒':
+            bet *= 1
+            balance += bet
+        elif rows[0] == '🍒':
+            bet *= 1
+            balance += bet
+
+def slots_game(bet):
+    global balance
     while True:
-        while True:
-            try:
-                while True:
-                    slots_bet = int(input('Place a bet: '))
-                    if slots_bet > credits or slots_bet < 0:
-                        print(f'You do not have {slots_bet}. Please enter a valid bet.')
-                        continue
-                    else:
-                        break
-            except ValueError:
-                print('Please enter a valid bet.')
-            break
-        while combo_select > 3:
-            select = random.choice(symbols)
-            combo_current = combo_current + select
-            combo_select = combo_select - 1
-        while player_RNG > 3:
-            select = random.choice(symbols)
-            player_roll = player_roll + select
-            player_RNG = player_RNG - 1
-        if player_roll == combo_current:
-            credits = credits + (slots_bet * 2)
-            print('Jackpot!')
+        try:
+            bet = int(input("Place your bet: "))
             while True:
-                again = input('Would you like to play again? ').upper
-                if again == 'Y':
+                if bet > balance or bet < 0:
+                    print(f'You do not have {bet} in your balance. Please enter a valid bet.')
                     continue
-                elif again == 'N':
-                    break
-            break
+                break
+        except ValueError:
+            print("Please enter a valid balance amount.")
+            continue
+        slots_spin()
+        symbol_display()
+        slots_valuer()
+        slot_replay()
+        
+def slot_replay():
+    while replay == 'Y':
+        replay = input('Would you like to replay? ').upper
+        if replay == 'Y':
+            print('Starting new game...')
+            slots_game()
+        elif replay == 'N':
+            print('Exiting game...')
 
-slots()
+        else:
+            print('Please enter a valid response.')
+            continue
+
+slots_game(bet = 0)
