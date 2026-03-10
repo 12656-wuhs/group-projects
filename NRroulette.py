@@ -23,7 +23,7 @@ def roulette_game():
         bet_type = input("Please select 1, 2, 3, or 4: ")
 
         if bet_type == '4':
-            print("99 percent off gamblers quit before hitting big, bye")
+            print("\n99 percent off gamblers quit before hitting big, bye")
             print(f"Final balance is {balance}")
             break
 
