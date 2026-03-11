@@ -78,7 +78,7 @@ def roulette_game():
             win = True
 
         if win:
-            balance += payout
+            balance += payout + bet_amount
             print(f"YAYAYAYAY WINNER!!!!!!! You won {payout} chips!")
         else:
             balance -= bet_amount
