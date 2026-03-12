@@ -74,10 +74,18 @@ ____________________________________________
         while True: #loops incase of invalid response
             replay = input('Would you like to replay [Y/N]? ').upper() #Asks if player wants to replay
             if replay == 'Y': #if the player wants to replay, it breaks this loop, leading to the game looping
-                print('Starting new game...')
+                print('''
+                      
+                      Starting new game...
+
+                      ''')
                 break #breaks this loop, loops the main loop
             elif replay == 'N': #if the player wants to quit, returns function, leading function to end
-                print('Exiting game...')
+                print('''
+                      
+                      Exiting game...
+
+                      ''')
                 return
             else: #if player enters invalid response
                 print('Please enter a valid response.')
