@@ -12,13 +12,16 @@ def slots_spin(): #Rolls 3 random symbols
     return rows #returns the rows list
 
 def symbol_display(rows): #Displays what symbols the program rolled on
-    print(f'''          ------- ------- -------
+    print(f'''____________________________________________
+          
+          ------- ------- -------
           |     | |     | |     |
           |     | |     | |     |
             {rows[0]}      {rows[1]}       {rows[2]}
           |     | |     | |     |
           |     | |     | |     |
-          ------- ------- -------''')
+          ------- ------- -------
+          ''')
 
 def slots_valuer(rows,bet): #gives specific winning amount depending on symbols rolled
     global balance
@@ -45,33 +48,38 @@ def slots_valuer(rows,bet): #gives specific winning amount depending on symbols 
     else:
         print('You won NOTHING! Better luck next time.')
 
-def slots_game():
-    global balance
-    while True:
-        try:
+def slots_game(): #main function for the game
+    global balance #makes balance a global variable
+    while True: #with loop for replayability
+        try: #tells the program to try this
             bet = int(input("Place your bet: "))
             while True:
                 if bet > balance or bet < 0:
                     print(f'You do not have {bet} in your balance. You have {balance} available.')
                     continue
                 break
-        except ValueError:
+        except ValueError: #if user inputs anything other that integers
             print("Please enter a valid balance amount.")
-            continue
-        balance -= bet
-        rows = slots_spin()
-        symbol_display(rows)
-        slots_valuer(rows,bet)
-        print(f'Remaining Balance: {balance}')
-        while True:
-            replay = input('Would you like to replay [Y/N]? ').upper()
-            if replay == 'Y':
+            continue #loops if value error occurs
+        balance -= bet #removes bet amount from balance
+        rows = slots_spin() #makes the rows list equal to the symbols that are rolled in the slots_spin function, which is called
+        symbol_display(rows) #calls symbol_display function and uses the rows list in the rows parameter
+        slots_valuer(rows,bet) #calls slots_valuer function and uses the rows list and bet variable in the rows and bet parameter
+        print(f'''____________________________________________
+              
+Remaining Balance: {balance}
+____________________________________________
+''') #prints current balance after win/lose is shown
+
+        while True: #loops incase of invalid response
+            replay = input('Would you like to replay [Y/N]? ').upper() #Asks if player wants to replay
+            if replay == 'Y': #if the player wants to replay, it breaks this loop, leading to the game looping
                 print('Starting new game...')
-                break
-            elif replay == 'N':
+                break #breaks this loop, loops the main loop
+            elif replay == 'N': #if the player wants to quit, returns function, leading function to end
                 print('Exiting game...')
                 return
-            else:
+            else: #if player enters invalid response
                 print('Please enter a valid response.')
 
 slots_game()
