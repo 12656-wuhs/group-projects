@@ -21,7 +21,12 @@ def roll_dice():
 
 def craps():
     # Establishes players
-    player_count = int(input("How many players do you want in the game?: "))
+    try:
+        player_count = int(input("How many players do you want in the game?: "))
+    except ValueError:
+        print("Defaulting to 1")
+        player_count = 1
+        
     players = []
     for i in range(player_count):
         name = input(f"Enter the name of your player {i+1}: ")
@@ -43,8 +48,7 @@ def craps():
     If you roll anything else, that will be your target number""")
         
 
-    print("----Welcome to the craps table, you're going to lose all your balance MWAHHAHAHA----")    
-    input("Press enter to roll the dice....")
+
     
     
     # Main Game Loop
@@ -65,38 +69,54 @@ def craps():
             print(f"{p['name']} Balance: ${p['balance']}")
             while True:
                 try:
-                    bet
-    
+                    print(f"\n{p['name']} Balance: ${p['balance']}")
+                    bet = int(input("Place your bets: $"))
+                    if 0 < bet <= p['balance']:
+                        p['balance'] -= bet
+                        current_bets[p['name']] = bet
+                        break
+                    else:
+                        print("Invalid amount. Must be between $1 and ${p['balance']}")
+                except ValueError:
+                    print("Please enter an actual number ♥")
     
         # The come-out roll
+        print("----Welcome to the craps table, you're going to lose all your balance MWAHHAHAHA----")    
+        input("Press enter to roll the dice....")
         point = roll_dice()
         print(f"You rolled a {point}")
+        
+        round_won = False
+        point_phase = False
         
         # These will decide what happens dependent on what you roll on your come out roll
         if point == 7 or point == 11:
             print("YOU WIN, it's a natural, and so are you")
+            round_won = True
         elif point == 2 or point == 3 or point == 12:
             print("You lose, you crapped out, you got it next time Queen or King")
+            round_won = False
         else:
             print(f"You didn't win or lose, you made it point which is {point}")
+            point_phase = True
             
         # The Second Phase
         print("Alrighty roo, now that you have 'point' you get to roll again.\nYour goal is to hit point BEFORE rolling a 7.")
-    
-        while True:
-            input("Press roll to enter again please...")
-            pass_line = roll_dice()
-            print(f"You rolled {pass_line}")
-            
-            
-            if pass_line == 7:
-                print("Well, you didn't get it this time. No worries tho, you'll get it next time.")
-                break
-            elif pass_line == point:
-                print("You win, fantastic job. I'm proud of you")
-                break
-            else:
-                print("Go ahead roll again.")
+        if point_phase:
+            while True:
+                input("Press roll to enter again please...")
+                pass_line = roll_dice()
+                print(f"You rolled {pass_line}")
+                
+                
+                if pass_line == 7:
+                    print("Well, you didn't get it this time. No worries tho, you'll get it next time.")
+                    break
+                elif pass_line == point:
+                    print("You win, fantastic job. I'm proud of you")
+                    break
+                else:
+                    print("Go ahead roll again.")
         
         
         
