@@ -52,8 +52,8 @@ def slots_game(): #main function for the game
     global balance #makes balance a global variable
     while True: #with loop for replayability
         try: #tells the program to try this
-            bet = int(input("Place your bet: "))
             while True:
+                bet = int(input("Place your bet: "))
                 if bet > balance or bet < 0:
                     print(f'You do not have {bet} in your balance. You have {balance} available.')
                     continue
