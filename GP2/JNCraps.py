@@ -55,15 +55,17 @@ def craps():
     
     # Main Game Loop
     while True:
-        shooter = players[shooter_index]
-        print(f"\n--- This is a new round: {shooter['name']} is the shooter! ---")
         
-        
-        # Checks if the players have money
+        # Checks if players have money
         active_players = [p for p in players if p['balance'] > 0]
         if not active_players:
             print("You're all out of money, sorry. Casino wins, baiiiii")
             break
+        
+        
+        shooter = active_players[shooter_index % len(active_players)]
+        print(f"\n--- This is a new round: {shooter['name']} is the shooter! ---")
+        
     
         # Betting Phase
         current_bets = {}
@@ -96,41 +98,47 @@ def craps():
         elif point == 2 or point == 3 or point == 12:
             print("You lose, you crapped out, you got it next time Queen or King")
             round_result = 'lose'
+            shooter_index += 1
         else:
             print(f"You didn't win or lose, you made it point which is {point}")
+            round_result = 'none'
             
         # The Second Phase
-        print("Alrighty roo, now that you have 'point' you get to roll again.\nYour goal is to hit point BEFORE rolling a 7.")
-        while True:
-            input("Press roll to enter again please...")
-            pass_line = roll_dice()
-            print(f"You rolled {pass_line}")
-            
-            
-            if pass_line == 7:
-                print("Well, you didn't get it this time. No worries tho, you'll get it next time.")
-                round_result = 'lose'
-                shooter_index += 1
-                break
-            elif pass_line == point:
-                print("You win, fantastic job. I'm proud of you")
-                round_result = 'win'
-                break
-            else:
-                print("Go ahead roll again.")
+        
+        if round_result == 'none':
+            print("Alrighty roo, now that you have 'point' you get to roll again.\nYour goal is to hit point BEFORE rolling a 7.")
+            while True:
+                input("Press roll to enter again please...")
+                pass_line = roll_dice()
+                print(f"You rolled {pass_line}")
                 
                 
-            # Payout 
-        for p in active_players:
-            bet = current_bets[p['name']]
-            if round_result == 'win':
-                p['balance'] += bet
-            else:
-                p['balance'] -= bet
-            print(f"{p['name']} now has ${p['balance']}")
-            
-            if input("\nPlay another round? (y/n): ").lower() != 'y':
-                break
+                if pass_line == 7:
+                    print("Well, you didn't get it this time. No worries tho, you'll get it next time.")
+                    round_result = 'lose'
+                    shooter_index += 1
+                    break
+                elif pass_line == point:
+                    print("You win, fantastic job. I'm proud of you")
+                    round_result = 'win'
+                    break
+                else:
+                    print("Go ahead roll again.")
+                    
+                    
+                # Payout 
+            for p in active_players:
+                bet = current_bets[p['name']]
+                if round_result == 'win':
+                    p['balance'] += bet
+                else:
+                    p['balance'] -= bet
+                print(f"{p['name']} now has ${p['balance']}")
+         
+        # Asks if you wanna play again   
+        if input("\nPlay another round? (y/n): ").lower() != 'y':
+            print("Thanks for playing!")
+            break
         
         
         
