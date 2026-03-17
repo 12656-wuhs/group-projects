@@ -1,12 +1,11 @@
 import random
 import os
 import pickle
-
-
 import time
 
+#beginning of nathaniels code
 def roulette_game():
-    balance = 1000
+    global balance
     print("Welcome to the Roulette table!")
 
     while balance > 0:
@@ -67,30 +66,36 @@ def roulette_game():
         if bet == 'number' and target == winning_num:
             payout = bet_amount * 35
             win = True
-            
+            recordkeep('Roulette', 'Win', winning_num)
         elif bet == 'color' and target == winning_color:
             payout = bet_amount
             win = True
-
+            recordkeep('Roulette', 'Win', winning_color)
         elif bet == 'Green' and target == winning_color:
             payout = bet_amount * 38
             win = True
-
+            recordkeep('Roulette', 'Win', '0')
         if win:
             balance += payout + bet_amount
             print(f"YAYAYAYAY WINNER!!!!!!! You won {payout} chips!")
+            print('Would you like to continue? (y/n)')
+            donecheck = input(' ')
+            if donecheck == 'y':
+                roulette_game()
+                return
         else:
             balance -= bet_amount
             print(f"Aw man, you lost {bet_amount} chips....")
-
+            print('Would you like to continue? (y/n)')
+            donecheck = input(' ')
+            if donecheck == 'y':
+                roulette_game()
+                return
     if balance <= 0:
-        print("\nGame over, go home broke ***.")
-
-if __name__ == '__main__':
-    main_menu()
+        print("\nGame over, go home broke ***.")   
 #end of nathaniels code
 
-#beginnning of james's code
+#beginnning of james n's code
 def roll_dice():
     return random.randint(1, 6) + random.randint(1, 6)
 
@@ -143,7 +148,15 @@ def craps():
             print(f"{p['name']} Balance: ${p['balance']}")
             while True:
                 try:
-                    bet
+                    print(f"\n{p['name']} Balance: ${p['balance']}")
+                    bet = int(input("Place your bets: $"))
+                    if 0 < bet <= p['balance']:
+                        current_bets[p['name']] = bet
+                        break
+                    else:
+                        print("Invalid amount. Must be between $1 and ${p['balance']}")
+                except ValueError:
+                    print("Please enter an actual number ♥")
     
     
         # The come-out roll
@@ -153,8 +166,10 @@ def craps():
         # These will decide what happens dependent on what you roll on your come out roll
         if point == 7 or point == 11:
             print("YOU WIN, it's a natural, and so are you")
+            recordkeep('Craps', 'Win', point)
         elif point == 2 or point == 3 or point == 12:
             print("You lose, you crapped out, you got it next time Queen or King")
+            recordkeep('Craps', 'Loss', point)
         else:
             print(f"You didn't win or lose, you made it point which is {point}")
             
@@ -169,12 +184,25 @@ def craps():
             
             if pass_line == 7:
                 print("Well, you didn't get it this time. No worries tho, you'll get it next time.")
+                recordkeep('Craps', 'Loss', pass_line)
+                print('Would you like to continue? (y/n)')
+                donecheck = input(' ')
+                if donecheck == 'y':
+                    craps()
+                    return
                 break
             elif pass_line == point:
                 print("You win, fantastic job. I'm proud of you")
+                recordkeep('Craps', 'Win', pass_line)
+                print('Would you like to continue? (y/n)')
+                donecheck = input(' ')
+                if donecheck == 'y':
+                    craps()
+                    return
                 break
             else:
                 print("Go ahead roll again.")
+                
 #End of James's code
 
 #Beginning of my (Logans) code
@@ -200,23 +228,23 @@ def main_menu():
 7: Quit''') 
     gamechoice = input('') #spits the input prompt onto an empty new line so things look clean
     if gamechoice == '1':
+        clear_screen()
         slots_spin()
-        clear_screen()
     elif gamechoice == '2':
-        play_round() #Placeholder function name for the game that will go here
         clear_screen()
+        play_round()
     elif gamechoice == '3':
+        clear_screen()
         craps()
-        clear_screen()
     elif gamechoice == '4':
+        clear_screen()
         roulette_game()
-        clear_screen()
     elif gamechoice == '5':
+        clear_screen()
         savestate(balance, savecount)
-        clear_screen()
     elif gamechoice == '6':
-        loadsave()
         clear_screen()
+        loadsave()
     elif gamechoice == '7':
         quit()
     else:
@@ -241,9 +269,10 @@ def savestate(tokens, bootnum):
         pickle.dump(objectstosave, savegame)
 
 
-def recordkeep(gameresult, score):
+def recordkeep(game, gameresult, score):
     with open('Game Records.txt', 'w') as records:
-        records.write(f'''Winner: {gameresult}
+        records.write(f'''Game: {game}
+Winner: {gameresult}
 Score: {score}''')
 
 def clear_screen():
@@ -255,92 +284,6 @@ def clear_screen():
         #Command for Linux and macOS (posix)
         _ = os.system('clear')
 #end of my (Logan's) code
-
-#Beginning of Nathaniels code
-def roulette_game():
-    global balance
-    print("Welcome to the Roulette table!")
-
-    while balance > 0:
-        print(f"\nYour current balance is {balance} chips!")
-        
-
-     #Choose what you are betting on. Either on one specific color, or on just the colors red or black.
-        print("Choose what you would like to bet on: ")
-        print("1 is a specific number (1-36) -- Payout is 35:1 ")
-        print("2 is betting on either color (Red/Black) -- Payout 1:1")
-        print("3 is betting on green (Green or zero) -- Payout is 38:1")
-        print("4 is to stop playing here and leave with what ya got.")
-        bet_type = input("Please select 1, 2, 3, or 4: ")
-
-        if bet_type == '4':
-            print("\n99 percent off gamblers quit before hitting big, bye")
-            print(f"Final balance is {balance}")
-            break
-
-        #bet_amount is taking the amount of your 'balance' you are putting in
-        bet_amount = int(input("Enter the amount you are betting: "))
-        while bet_amount > balance:
-            bet_amount = int(input("You don't got enough for that brokie do it again: "))
-            continue
-
-        if bet_type ==  '1':
-            target = int(input("Pick a number (1-36): "))
-            while target <1 or target > 36:
-                target = int(input("That is not a correct option, please put a number 1-36: "))
-            bet = 'number'
-        
-        elif bet_type == '2':
-            target = input("Pick a color (red or black): ").lower()
-            bet = "color"
-        else:
-            target = 0
-            bet = 'Green'
-
-        #Spins wheel cutely
-        print("\nSpinning the wheel...............................................")
-        time.sleep(1.5)
-        
-         #Defins the number of the spin
-        winning_num = random.randint(0, 36)
-
-        #Defines the colors of the wheel (Evens are red, odds are black, and zero is green.)
-        if winning_num == 0:
-            winning_color = 'Green'
-        elif winning_num % 2 == 0:
-            winning_color = 'Red'
-        else:
-            winning_color = "Black"
-
-        print(f"---> The ball landed on {winning_num} ({winning_color.upper()} <---)")
-
-        #Result logic
-        win = False
-        if bet == 'number' and target == winning_num:
-            payout = bet_amount * 35
-            win = True
-            
-        elif bet == 'color' and target == winning_color:
-            payout = bet_amount
-            win = True
-
-        elif bet == 'Green' and target == winning_color:
-            payout = bet_amount * 38
-            win = True
-
-        if win:
-            balance += payout + bet_amount
-            print(f"YAYAYAYAY WINNER!!!!!!! You won {payout} chips!")
-        else:
-            balance -= bet_amount
-            print(f"Aw man, you lost {bet_amount} chips....")
-
-    if balance <= 0:
-        print("\nGame over, go home broke ***.")
-
-if __name__ == '__main__':
-    main_menu()
-#end of Nathaniels code
 
 #beginning of James Lawsons code
 def slots_spin(): #Rolls 3 random symbols
@@ -381,8 +324,10 @@ def slots_valuer(rows,bet): #gives specific winning amount depending on symbols 
             bet *= 7
             balance += bet
         print(f'Congrats! You won {bet}!')
+        recordkeep('Slots', 'Win', rows)
     else:
         print('You won NOTHING! Better luck next time.')
+        recordkeep('Slots', 'Loss', rows)
 
 def slots_game():
     global balance
@@ -406,7 +351,7 @@ def slots_game():
             replay = input('Would you like to replay [Y/N]? ').upper()
             if replay == 'Y':
                 print('Starting new game...')
-                break
+                continue
             elif replay == 'N':
                 print('Exiting game...')
                 return
@@ -465,8 +410,8 @@ def play_round():
         
         if score > 21:
             print("You Busted! ☠")
+            recordkeep('Blackjack', 'Loss', score)
             return balance - bet
-        
         move = input("Would you like to [H]it or [S]tand? ").lower()
         if move == 'h':
             player_hand.append(deck.pop())
@@ -487,26 +432,26 @@ def play_round():
     p_score = calculate_score(player_hand)
     if d_score > 21 or p_score > d_score:
         print(f"You win! You are so good at this! 🎉 +${bet} 💰")
+        recordkeep('Blackjack', 'Win', p_score)
         return balance + bet
     elif p_score < d_score:
         print(f"Dealer wins...... you suck at this....😔 -${bet} 💸")
+        recordkeep('Blackjack', 'Lose', p_score)
+        print('Would you like to continue? (y/n)')
+        donecheck = input(' ')
+        if donecheck == 'y':
+            craps()
+            return
         return balance - bet
     else:
         print("Push (Tie). Bet returned. 😔")
+        recordkeep('Blackjack', 'Tie', p_score)
+        print('Would you like to continue? (y/n)')
+        donecheck = input(' ')
+        if donecheck == 'y':
+            craps()
+            return
         return balance
 
-def main():
-    balance = 500  # Starting chips
-    while balance > 0:
-        balance = play_round(balance)
-        if balance <= 0:
-            print("You're out of chips! ⛃⛂ Be better next time twin.")
-            break
-        if input("\n Wanna play another round? (y/n): ").lower() != 'y':
-            break
-    print(f"Final Balance: ${balance}. Thanks for playing! Gamble more of your life savings next time!")
-
-if __name__ == "__main__":
-    main()
 #End of Jaidyns Code
 main_menu()
