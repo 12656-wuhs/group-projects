@@ -94,9 +94,11 @@ def craps():
         # These will decide what happens dependent on what you roll on your come out roll
         if point == 7 or point == 11:
             print("YOU WIN, it's a natural, and so are you")
+            recordkeep("Craps", 'Win', point)
             round_result = 'win'
         elif point == 2 or point == 3 or point == 12:
             print("You lose, you crapped out, you got it next time Queen or King")
+            recordkeep('Craps', 'Loss', point)
             round_result = 'lose'
             shooter_index += 1
         else:
@@ -117,11 +119,22 @@ def craps():
                     print("Well, you didn't get it this time. No worries tho, you'll get it next time.")
                     round_result = 'lose'
                     shooter_index += 1
+                    recordkeep('Craps', 'Loss', pass_line)
+                    print('Would you like to continue? (y/n)')
+                    donecheck = input(' ')
+                    if donecheck == 'y':
+                        craps()
+                        return
                     break
                 elif pass_line == point:
                     print("You win, fantastic job. I'm proud of you")
+                    recordkeep('Craps', 'Win', pass_line)
                     round_result = 'win'
-                    break
+                    print('Would you like to continue? (y/n)')
+                    donecheck = input(' ')
+                    if donecheck == 'y':
+                        craps()
+                        return
                 else:
                     print("Go ahead roll again.")
                     
