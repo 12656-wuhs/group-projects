@@ -467,7 +467,7 @@ def play_round():
         print('Would you like to continue? (y/n)')
         donecheck = input(' ')
         if donecheck == 'y':
-            craps()
+            play_round()
             return
         return balance - bet
     else:
@@ -476,7 +476,7 @@ def play_round():
         print('Would you like to continue? (y/n)')
         donecheck = input(' ')
         if donecheck == 'y':
-            craps()
+            play_round()
             return
         return balance
 
