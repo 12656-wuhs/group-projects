@@ -449,21 +449,21 @@ def play_round():
 
     # Dealer Turn
     print(f"Dealer reveals: {dealer_hand}")
-    d_score = calculate_score(dealer_hand)
-    while d_score < 17:
+    dealer_score = calculate_score(dealer_hand)
+    while dealer_score < 17:
         dealer_hand.append(deck.pop())
-        d_score = calculate_score(dealer_hand)
-        print(f"Dealer hits: {dealer_hand} (Score: {d_score})")
+        dealer_score = calculate_score(dealer_hand)
+        print(f"Dealer hits: {dealer_hand} (Score: {dealer_score})")
 
     # Determine Winner
-    p_score = calculate_score(player_hand)
-    if d_score > 21 or p_score > d_score:
+    player_score = calculate_score(player_hand)
+    if dealer_score > 21 or player_score > dealer_score:
         print(f"You win! You are so good at this! 🎉 +${bet} 💰")
-        recordkeep('Blackjack', 'Win', p_score)
+        recordkeep('Blackjack', 'Win', player_score)
         return balance + bet
-    elif p_score < d_score:
+    elif player_score < dealer_score:
         print(f"Dealer wins...... you suck at this....😔 -${bet} 💸")
-        recordkeep('Blackjack', 'Lose', p_score)
+        recordkeep('Blackjack', 'Lose', player_score)
         print('Would you like to continue? (y/n)')
         donecheck = input(' ')
         if donecheck == 'y':
@@ -472,7 +472,7 @@ def play_round():
         return balance - bet
     else:
         print("Push (Tie). Bet returned. 😔")
-        recordkeep('Blackjack', 'Tie', p_score)
+        recordkeep('Blackjack', 'Tie', player_score)
         print('Would you like to continue? (y/n)')
         donecheck = input(' ')
         if donecheck == 'y':
