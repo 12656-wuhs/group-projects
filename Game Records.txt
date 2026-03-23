@@ -1,3 +1,3 @@
-Game: Blackjack
-Winner: Win
-Score: 21
+Game: Slots
+Winner: Loss
+Score: ['🍒', '🔔', '🍋']

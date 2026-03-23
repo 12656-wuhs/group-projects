@@ -256,7 +256,7 @@ def main_menu():
     gamechoice = input('') #spits the input prompt onto an empty new line so things look clean
     if gamechoice == '1':
         clear_screen()
-        slots_spin()
+        slots_game()
     elif gamechoice == '2':
         clear_screen()
         play_round()
@@ -358,32 +358,32 @@ def slots_valuer(rows,bet): #gives specific winning amount depending on symbols 
 
 def slots_game():
     global balance
+    print(balance)
     while True:
         try:
             bet = int(input("Place your bet: "))
-            while True:
-                if bet > balance or bet < 0:
-                    print(f'You do not have {bet} in your balance. You have {balance} available.')
-                    continue
-                break
+            if bet > balance or bet < 0:
+                print(f'You do not have {bet} in your balance. You have {balance} available.')
+                continue
+            break
         except ValueError:
             print("Please enter a valid balance amount.")
             continue
-        balance -= bet
-        rows = slots_spin()
-        symbol_display(rows)
-        slots_valuer(rows,bet)
-        print(f'Remaining Balance: {balance}')
-        while True:
-            replay = input('Would you like to replay [Y/N]? ').upper()
-            if replay == 'Y':
-                print('Starting new game...')
-                continue
-            elif replay == 'N':
-                print('Exiting game...')
-                return
-            else:
-                print('Please enter a valid response.')
+    balance -= bet
+    rows = slots_spin()
+    symbol_display(rows)
+    slots_valuer(rows,bet)
+    print(f'Remaining Balance: {balance}')
+    while True:
+        replay = input('Would you like to replay [Y/N]? ').upper()
+        if replay == 'Y':
+            print('Starting new game...')
+            continue
+        elif replay == 'N':
+            print('Exiting game...')
+            return
+        else:
+            print('Please enter a valid response.')
 #End of James Lawsons code
 
 #Beginning of Jaidyns code
